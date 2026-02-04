@@ -43,8 +43,8 @@ The project is designed to run in a specific virtual environment (`.venv_age_pre
     ```bash
     pip install -r requirements.txt
     ```
-    *Note: The environment should already have necessary packages like `torch`, `deepface`, `numpy`, etc.*
-
+3. ** Download face prediction model weights from google drive as its size too big to be uploaded on github
+   https://drive.google.com/file/d/1F-9CQIOCu73p9R0eXjH6Sdu3nN1hZaoY/view?usp=sharing
 ## Usage
 
 ### 1. Face Matching & Age Prediction (Demo)
@@ -63,9 +63,10 @@ The `facematching.py` script takes two image paths, predicts the age of the pers
    ```bash
    python facematching.py
    ```
-*(Note: The script outputs the predicted age for both images, the true age (if available in filename), and a similarity score/verification result.)*
+*(The script outputs the predicted age for both images, the true age (if available in filename), and a similarity score/verification result.)*
 
 ### 2. Training the Model
+
 
 To train the age prediction model from scratch:
 
