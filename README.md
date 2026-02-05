@@ -25,10 +25,6 @@ This project implements an Age Prediction model using Deep Learning (EfficientNe
 
 ## Installation and Setup
 
-### Prerequisites
-
-- Python 3.10+
-- Windows (as configured in this environment)
 
 ### Setting up the Environment
 
