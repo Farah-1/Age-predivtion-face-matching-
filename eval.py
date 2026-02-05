@@ -11,7 +11,7 @@ def compute_metrics(
     cs_thresholds: List[int] = None,
 ) -> Tuple[float, dict, list]:
     if cs_thresholds is None:
-        cs_thresholds = list(range(1, 11))  # 1..10 years
+        cs_thresholds = list(range(1, 11))  # 1untill 10 years
 
     model.eval()
 
@@ -55,7 +55,6 @@ def visualize_prediction(
         pred_age, _ = model(image)
         pred_age = pred_age.item()
 
-# Convert tensor (C,H,W) to numpy
     img_np = sample["image"].cpu().numpy().transpose(1, 2, 0)
 
 
@@ -78,8 +77,7 @@ def main():
     print(f"Using device: {device}")
     test_ds = UTKFaceFolderDataset(os.path.join(cfg.split_path, 'test'), transform=get_val_transforms(cfg.img_size))
 
-    test_loader = DataLoader(test_ds, batch_size=cfg.batch_size, shuffle=True, num_workers=cfg.num_workers)
-# Load best model
+    test_loader = DataLoader(test_ds, batch_size=cfg.batch_size, shuffle=True, num_workers=0)
     ckpt_path = os.path.join(cfg.output_dir, "best_model_2nd_trial.pt")
     ckpt = torch.load(ckpt_path, map_location=device)
     ckpt_cfg_dict = ckpt.get("config", {})
@@ -105,7 +103,7 @@ def main():
 
     # Visualize some predictions
     print("Visualizing sample predictions...")
-    for idx in [0, 10, 20, 30, 40]:
+    for idx in [0, 9, 20, 30, 40]:
         if idx < len(test_ds):
             visualize_prediction(model, test_ds, idx, device, cfg.img_size)
         

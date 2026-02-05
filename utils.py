@@ -22,20 +22,4 @@ import albumentations as A
 from albumentations.pytorch import ToTensorV2
 from typing import Tuple
 
-import albumentations as A
-from albumentations.pytorch import ToTensorV2
-from tqdm.auto import tqdm
-import argparse
-import os
-from typing import Dict
-
-import torch
-from torch import nn
-from torch.optim import AdamW
-from torch.optim.lr_scheduler import OneCycleLR
-
 import shutil
-# print(f"PyTorch: {torch.__version__}")
-# print(f"CUDA Available: {torch.cuda.is_available()}")
-# if torch.cuda.is_available():
-#     print(f"GPU: {torch.cuda.get_device_name(0)}")
