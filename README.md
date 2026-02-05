@@ -11,16 +11,15 @@ This project implements an Age Prediction model using Deep Learning (EfficientNe
 
 ## Project Structure
 
-- `train.py`: Main script to train the age prediction model.
-- `eval.py`: Script to evaluate the trained model on the test set.
-- `facematching.py`: Module for face matching and age prediction on image pairs.
-- `model.py`: Defines the `AgePredictionModel` architecture.
-- `data.py`: Dataset loading and preprocessing (UTKFaceFolderDataset).
-- `losses.py`: Custom loss functions (L1 Loss + KL Divergence for soft labels).
-- `config.py`: Configuration parameters for training and evaluation.
-- `transforms.py`: Image augmentations and transformations.
-- `utils.py`: Utility functions for logging and seeding.
-- `requirements.txt`: List of Python dependencies.
+- Entry points:
+  - `train.py`: Train the age prediction model.
+  - `eval.py`: Evaluate the trained model on the test set.
+- Core modules (imported by entry points):
+  - `src/` with `config.py`, `data.py`, `model.py`, `losses.py`, `transforms.py`, `utils.py`, `eval.py`
+- Auxiliary scripts:
+  - `auxiliary/` with plotting, galleries, and report generation scripts
+- Outputs:
+  - `outputs/` stores checkpoints and generated charts/images
 
 ## Installation and Setup
 
@@ -43,35 +42,28 @@ The project is designed to run in a specific virtual environment (`.venv_age_pre
     ```bash
     pip install -r requirements.txt
     ```
-3. ** Download face prediction model weights from google drive as its size too big to be uploaded on github
-   https://drive.google.com/file/d/1F-9CQIOCu73p9R0eXjH6Sdu3nN1hZaoY/view?usp=sharing
+    *Note: The environment should already have necessary packages like `torch`, `deepface`, `numpy`, etc.*
+
 ## Usage
 
 ### 1. Face Matching & Age Prediction (Demo)
 
-The `facematching.py` script takes two image paths, predicts the age of the person in each image, and verifies if they match.
+Use the auxiliary face matching module to compare two images and predict ages.
 
 **How to run:**
-1. Open `facematching.py`.
-2. Scroll to the bottom `if __name__ == "__main__":` block.
-3. Update the `path1` and `path2` variables with your image paths:
-   ```python
-   path1 = r"C:\path\to\your\image1.jpg"
-   path2 = r"C:\path\to\your\image2.jpg"
-   ```
-4. Run the script:
+1. Open `auxiliary/face_matching.py`.
+2. In the `if __name__ == "__main__":` block, set your image paths.
+3. Run:
    ```bash
-   python facematching.py
+   python auxiliary\face_matching.py
    ```
-*(The script outputs the predicted age for both images, the true age (if available in filename), and a similarity score/verification result.)*
 
 ### 2. Training the Model
-
 
 To train the age prediction model from scratch:
 
 1.  Ensure your dataset is prepared (UTKFace format).
-2.  Adjust parameters in `config.py` if needed (batch size, epochs, learning rate).
+2.  Adjust parameters in `src/config.py` if needed (batch size, epochs, learning rate, paths).
 3.  Run the training script:
     ```bash
     python train.py
@@ -86,9 +78,9 @@ To evaluate the best trained model on the test dataset:
 ```bash
 python eval.py
 ```
-- This loads the model `outputs/best_model_2nd_trial.pt` (ensure this file exists or update the path in `eval.py`).
-- Outputs Mean Absolute Error (MAE) and Cumulative Score (CS) metrics.
-- Visualizes sample predictions.
+- Loads `outputs/best_model_2nd_trial.pt` (update path in `eval.py` if needed).
+- Prints MAE and CS metrics; shows sample prediction visualizations.
+- If you face Windows worker issues, `eval.py` uses `num_workers=0` for stability.
 
 ## Dataset Format
 
@@ -96,11 +88,42 @@ The system supports parsing ages from filenames:
 - **UTKFace**: `[age]_[gender]_[race]_[date].jpg` (e.g., `20_1_0_20170116174525125.jpg`)
 - **FG-NET**: `[ID]A[AGE][suffix].JPG` (e.g., `001A02.JPG`)
 
+## Model Weights & Large Files
+
+The trained model weights (`best_model_2nd_trial.pt`) are approximately 223MB, which exceeds GitHub's standard 100MB file limit. To upload this repository to GitHub, you **must use Git LFS (Large File Storage)**.
+
+### How to Upload to GitHub
+
+1.  **Install Git LFS**:
+    - Download and install from [git-lfs.com](https://git-lfs.com/).
+    - Or run: `git lfs install`
+
+2.  **Initialize the Repository**:
+    ```bash
+    git init
+    git lfs install
+    ```
+
+3.  **Track Large Files** (Already configured in `.gitattributes`):
+    The repository includes a `.gitattributes` file that automatically tracks `*.pt` files using LFS.
+    ```bash
+    git add .gitattributes
+    ```
+
+4.  **Commit and Push**:
+    ```bash
+    git add .
+    git commit -m "Initial commit with model weights"
+    git branch -M main
+    git remote add origin <YOUR_GITHUB_REPO_URL>
+    git push -u origin main
+    ```
+
 ## Dependencies
 
 Key libraries used:
 - `torch`, `torchvision` (Deep Learning)
 - `deepface` (Face Verification)
 - `tf-keras` (Required by DeepFace)
-- `efficientnet_pytorch` / `timm` (Backbone)
+- `timm` (EfficientNet backbone)
 - `numpy`, `pandas`, `matplotlib` (Data processing & Viz)
