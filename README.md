@@ -20,6 +20,8 @@ This project implements an Age Prediction model using Deep Learning (EfficientNe
   - `auxiliary/` with plotting, galleries, and report generation scripts
 - Outputs:
   - `outputs/` stores checkpoints and generated charts/images
+  ## the model weights and the virtual environment are published on google drive
+  - https://drive.google.com/drive/folders/1b-pfmko95O8QRi7goUBSVfE0eHI82XhT?usp=sharing
 
 ## Installation and Setup
 
@@ -38,11 +40,6 @@ The project is designed to run in a specific virtual environment (`.venv_age_pre
     .\.venv_age_pred\Scripts\Activate.ps1
     ```
 
-2.  **Install Dependencies** (if not already installed):
-    ```bash
-    pip install -r requirements.txt
-    ```
-    *Note: The environment should already have necessary packages like `torch`, `deepface`, `numpy`, etc.*
 
 ## Usage
 
@@ -51,11 +48,11 @@ The project is designed to run in a specific virtual environment (`.venv_age_pre
 Use the auxiliary face matching module to compare two images and predict ages.
 
 **How to run:**
-1. Open `auxiliary/face_matching.py`.
-2. In the `if __name__ == "__main__":` block, set your image paths.
+1. Open `src/create_facematching_plot.py`.
+2. set your image paths.
 3. Run:
    ```bash
-   python auxiliary\face_matching.py
+   python src\create_facematching_plot.py
    ```
 
 ### 2. Training the Model
@@ -69,14 +66,13 @@ To train the age prediction model from scratch:
     python train.py
     ```
     - Checkpoints will be saved in the `outputs/` directory.
-    - TensorBoard logs are saved in `outputs/logs/`.
 
 ### 3. Evaluation
 
 To evaluate the best trained model on the test dataset:
 
 ```bash
-python eval.py
+python src/eval.py
 ```
 - Loads `outputs/best_model_2nd_trial.pt` (update path in `eval.py` if needed).
 - Prints MAE and CS metrics; shows sample prediction visualizations.
@@ -90,40 +86,6 @@ The system supports parsing ages from filenames:
 
 ## Model Weights & Large Files
 
-The trained model weights (`best_model_2nd_trial.pt`) are approximately 223MB, which exceeds GitHub's standard 100MB file limit. To upload this repository to GitHub, you **must use Git LFS (Large File Storage)**.
+The trained model weights (`best_model_2nd_trial.pt`) are approximately 223MB, which exceeds GitHub's standard 100MB file limit.
+so i uploaded to google drive   - https://drive.google.com/drive/folders/1b-pfmko95O8QRi7goUBSVfE0eHI82XhT?usp=sharing
 
-### How to Upload to GitHub
-
-1.  **Install Git LFS**:
-    - Download and install from [git-lfs.com](https://git-lfs.com/).
-    - Or run: `git lfs install`
-
-2.  **Initialize the Repository**:
-    ```bash
-    git init
-    git lfs install
-    ```
-
-3.  **Track Large Files** (Already configured in `.gitattributes`):
-    The repository includes a `.gitattributes` file that automatically tracks `*.pt` files using LFS.
-    ```bash
-    git add .gitattributes
-    ```
-
-4.  **Commit and Push**:
-    ```bash
-    git add .
-    git commit -m "Initial commit with model weights"
-    git branch -M main
-    git remote add origin <YOUR_GITHUB_REPO_URL>
-    git push -u origin main
-    ```
-
-## Dependencies
-
-Key libraries used:
-- `torch`, `torchvision` (Deep Learning)
-- `deepface` (Face Verification)
-- `tf-keras` (Required by DeepFace)
-- `timm` (EfficientNet backbone)
-- `numpy`, `pandas`, `matplotlib` (Data processing & Viz)
